@@ -47,16 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const li = document.createElement('li');
-
         appendToLI('span', 'textContent', text);
-        
         appendToLI('label', 'textContent', 'Confirmed')
             .appendChild(createElement('input', 'type', 'checkbox'));
-
-
         appendToLI('button', 'textContent', 'Edit');
         appendToLI('button', 'textContent', 'Remove');
-
         return li;
     }
 
@@ -85,9 +80,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = e.target;
             const li = button.parentNode;
             const ul = li.parentNode;
-            if (button.textContent === 'Remove') {
+            function removeName() {
                 ul.removeChild(li);
-            } else if (button.textContent === 'Edit') {
+            }
+            function editName() {
                 const span = li.firstElementChild;
                 const input = document.createElement('input');
                 input.type = 'text';
@@ -95,14 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 li.insertBefore(input, span);
                 li.removeChild(span);
                 button.textContent = 'Save';
-
-            } else if (button.textContent === 'Save') {
+            }
+            function saveName() {
                 const input = li.firstElementChild;
                 const span = document.createElement('span');
                 span.textContent = input.value;
                 li.insertBefore(span, input);
                 li.removeChild(input);
                 button.textContent = 'Edit';
+            }
+
+            if (button.textContent === 'Remove') {
+                removeName();
+            } else if (button.textContent === 'Edit') {
+                editName();
+            } else if (button.textContent === 'Save') {
+                saveName();
             }
         }
     });
