@@ -50,8 +50,8 @@ document.addEventListener('DOMContentLoaded', () => {
         appendToLI('span', 'textContent', text);
         appendToLI('label', 'textContent', 'Confirmed')
             .appendChild(createElement('input', 'type', 'checkbox'));
-        appendToLI('button', 'textContent', 'Edit');
-        appendToLI('button', 'textContent', 'Remove');
+        appendToLI('button', 'textContent', 'edit');
+        appendToLI('button', 'textContent', 'remove');
         return li;
     }
 
@@ -80,34 +80,38 @@ document.addEventListener('DOMContentLoaded', () => {
             const button = e.target;
             const li = button.parentNode;
             const ul = li.parentNode;
-            function removeName() {
-                ul.removeChild(li);
-            }
-            function editName() {
-                const span = li.firstElementChild;
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.value = span.textContent;
-                li.insertBefore(input, span);
-                li.removeChild(span);
-                button.textContent = 'Save';
-            }
-            function saveName() {
-                const input = li.firstElementChild;
-                const span = document.createElement('span');
-                span.textContent = input.value;
-                li.insertBefore(span, input);
-                li.removeChild(input);
-                button.textContent = 'Edit';
-            }
+            const action = button.textContent;
+            const nameActions = {
+                remove: () => {
+                    ul.removeChild(li);
+                },
+                edit: () => {
+                    const span = li.firstElementChild;
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.value = span.textContent;
+                    li.insertBefore(input, span);
+                    li.removeChild(span);
+                    button.textContent = 'save';
+                },
+                save: () => {
+                    const input = li.firstElementChild;
+                    const span = document.createElement('span');
+                    span.textContent = input.value;
+                    li.insertBefore(span, input);
+                    li.removeChild(input);
+                    button.textContent = 'edit';
+                }
+            };
 
-            if (button.textContent === 'Remove') {
-                removeName();
-            } else if (button.textContent === 'Edit') {
-                editName();
-            } else if (button.textContent === 'Save') {
-                saveName();
-            }
+            nameActions[action](); // This is replacing below if.. statement. (Select and run action in buton's name.)
+/*             if (action === 'remove') {
+                nameActions.remove();
+            } else if (action === 'edit') {
+                nameActions.edit();
+            } else if (action === 'save') {
+                nameActions.save();
+            } */
         }
     });
 });
